@@ -10,7 +10,7 @@ Todos os datasets com datas são filtrados na camada Silver para o intervalo **1
 
 | Elemento | Dataset principal | Dataset complementar |
 |---|---|---|
-| Gabriel Almeida | Global Superstore Data | *a preencher* |
+| Gabriel Almeida | Global Superstore Data | World Data 2017 (Global Economic & Environmental Indicators) |
 | Diogo Fernandes | DataCo Smart Supply Chain | US Holiday Dates (2004-2021) |
 | Bruno Sousa | Marketing Funnel by Olist | Brazil Inflation Rates History |
 | Quévin Gonçalves | Electronic Products and Pricing Data | Amazon Review Data (2018) |
