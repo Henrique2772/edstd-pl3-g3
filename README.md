@@ -33,13 +33,21 @@ Se enviarem ficheiros pelo site do GitHub (*Add file → Upload files*), entrem 
 
 ## Modelo dimensional do grupo
 
-O modelo do grupo deve ser uma **constelação**: as tabelas de factos de cada elemento partilham dimensões comuns (dimensões conformes). A dimensão a partilhar por todos é a **`dim_tempo`**:
+O modelo do grupo está em `modelo/modelo_grupo.drawio` (abre-se em [draw.io](https://app.diagrams.net)). É uma **constelação** organizada por áreas de negócio, e não por elemento do grupo:
 
-- chave `id_tempo` no formato `AAAAMMDD` (ex.: `20170704`);
-- um registo por dia do intervalo comum;
-- atributos: data, dia, dia da semana, início da semana, mês, trimestre, ano e feriado (do US Holiday Dates).
+1. **Vendas & Encomendas**: `fact_vendas_superstore` (Gabriel), `fact_encomendas_dataco` (Diogo) e `fact_itens_olist` (Enzo), separadas por serem processos de empresas diferentes.
+2. **Marketing & Expansão**: `fact_funil_marketing` (Bruno).
+3. **Produto & Preços**: `fact_precos` (Quévin), com os produtos da Datafiniti e da Amazon na mesma `dim_produto` (sem tabela ponte).
+4. **Avaliações & Satisfação**: `fact_avaliacoes`, com as avaliações do Women's Clothing, do Rent the Runway, da Amazon e da Olist numa só tabela (coluna `fonte`).
+5. **Contexto**: `fact_macro_mensal` (IPCA) e `fact_meteorologia_diaria` (INMET).
 
-O modelo parcial do Henrique está em `modelo/henrique/DER_Henrique.png`.
+**Dimensões partilhadas** (a vermelho no diagrama):
+- `dim_calendario`: chave `sk_calendario` no formato `AAAAMMDD` (ex.: `20170704`), um registo por dia do intervalo comum, com os feriados dos EUA (US Holiday Dates);
+- `dim_categoria_produto`: área comum (ex.: Vestuário, Eletrónica, Mobiliário), categoria e subcategoria, usada pelas vendas, encomendas, leads, preços e avaliações;
+- `dim_vendedor`: retalhistas (Datafiniti), vendedores da Olist e leads convertidas do Bruno;
+- `dim_localizacao`: país (com os indicadores do World Data 2017) e estado.
+
+As chaves usam o prefixo `sk_`. Valores desconhecidos usam o registo `-1` de cada dimensão.
 
 ## Regras
 
