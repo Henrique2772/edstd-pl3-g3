@@ -45,7 +45,10 @@ O modelo do grupo está em `modelo/modelo_grupo.drawio` (abre-se em [draw.io](ht
 - `dim_calendario`: chave `sk_calendario` no formato `AAAAMMDD` (ex.: `20170704`), um registo por dia do intervalo comum, com os feriados dos EUA (US Holiday Dates);
 - `dim_categoria_produto`: área comum (ex.: Vestuário, Eletrónica, Mobiliário), categoria e subcategoria, usada pelas vendas, encomendas, leads, preços e avaliações;
 - `dim_vendedor`: retalhistas (Datafiniti), vendedores da Olist e leads convertidas do Bruno;
-- `dim_localizacao`: país (com os indicadores do World Data 2017) e estado.
+- `dim_localizacao`: país (com os indicadores do World Data 2017) e estado;
+- `dim_produto`: peças de roupa (Women's Clothing, Rent the Runway) e eletrónicos (Datafiniti e Amazon), partilhada pelas áreas 3 e 4.
+
+Dimensões de uma só área: `dim_cliente` (clientes do DataCo e da Olist) e `dim_modo_envio` na área 1, e `dim_perfil_lead` (origem e perfil da lead) na área 2. Os atrasos e prazos ficam como medidas em dias, por isso cada tabela de factos só liga ao calendário pelas datas que as perguntas usam.
 
 As chaves usam o prefixo `sk_`. Valores desconhecidos usam o registo `-1` de cada dimensão.
 
