@@ -33,22 +33,13 @@ Se enviarem ficheiros pelo site do GitHub (*Add file → Upload files*), entrem 
 
 ## Modelo dimensional do grupo
 
-O modelo do grupo está em `modelo/modelo_grupo.drawio` (abre-se em [draw.io](https://app.diagrams.net)). É **um só modelo em constelação**: as tabelas de factos de todos partilham as mesmas dimensões, e não um modelo por pessoa.
+O modelo do grupo deve ser uma **constelação**: as tabelas de factos de cada elemento partilham dimensões comuns (dimensões conformes). A dimensão a partilhar por todos é a **`dim_tempo`**:
 
-**Dimensões partilhadas (iguais para todos):**
+- chave `id_tempo` no formato `AAAAMMDD` (ex.: `20170704`);
+- um registo por dia do intervalo comum;
+- atributos: data, dia, dia da semana, início da semana, mês, trimestre, ano e feriado (do US Holiday Dates).
 
-| Dimensão | Usada por | Notas |
-|---|---|---|
-| `dim_tempo` | todos | chave `id_tempo` no formato `AAAAMMDD` (ex.: `20170704`); um registo por dia do intervalo comum; feriados dos EUA (US Holiday Dates) e IPCA do Brasil; registo `-1` = sem data |
-| `dim_categoria` | produtos, vendas do Gabriel, leads do Bruno | atributo `area` comum (ex.: Vestuário, Eletrónica, Mobiliário, Material de escritório) que relaciona os datasets |
-| `dim_produto` | avaliações, preços, itens do DataCo e da Olist | uma linha por produto de qualquer loja (coluna `fonte`); a Datafiniti e a Amazon ligam-se pelo modelo |
-| `dim_cliente` | itens do DataCo e da Olist, avaliações da Olist | coluna `fonte` |
-| `dim_vendedor` | preços (retalhistas) e itens da Olist (vendedores) | coluna `fonte` |
-| `dim_localizacao` | vendas do Gabriel, itens do DataCo, clientes, vendedores, meteorologia | país (com os indicadores do World Data 2017) e estado do Brasil |
-
-**Tabelas de factos:** `fact_avaliacao` (Women's Clothing, Rent the Runway, Amazon e Olist juntas, com a coluna `fonte`), `fact_preco`, `fact_venda`, `fact_lead`, `fact_meteorologia`, e as tabelas de itens `fact_item_encomenda` (DataCo) e `fact_item_olist` (Olist), que ficam separadas.
-
-Nas tabelas Gold, usem os mesmos nomes de tabelas e de colunas do modelo. Os valores desconhecidos usam o registo `-1` de cada dimensão.
+O modelo parcial do Henrique está em `modelo/henrique/DER_Henrique.png`.
 
 ## Regras
 
