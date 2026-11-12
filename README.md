@@ -33,22 +33,13 @@ Se enviarem ficheiros pelo site do GitHub (*Add file → Upload files*), entrem 
 
 ## Modelo dimensional do grupo
 
-O modelo do grupo está em `modelo/modelo_grupo.drawio` (abre-se em [draw.io](https://app.diagrams.net)). É uma **constelação**: as tabelas de factos de todos partilham as mesmas dimensões (dimensões conformes), que estão ao centro do diagrama.
+O modelo do grupo deve ser uma **constelação**: as tabelas de factos de cada elemento partilham dimensões comuns (dimensões conformes). A dimensão a partilhar por todos é a **`dim_tempo`**:
 
-**Dimensões partilhadas:**
+- chave `id_tempo` no formato `AAAAMMDD` (ex.: `20170704`);
+- um registo por dia do intervalo comum;
+- atributos: data, dia, dia da semana, início da semana, mês, trimestre, ano e feriado (do US Holiday Dates).
 
-| Dimensão | O que tem | Usada por |
-|---|---|---|
-| `dim_tempo` | um registo por dia do intervalo comum (chave `AAAAMMDD`); feriados dos EUA (US Holiday Dates) e IPCA do Brasil | todas as tabelas de factos |
-| `dim_categoria` | área comum (ex.: Vestuário, Eletrónica, Mobiliário), categoria e subcategoria | `dim_produto`, `fact_venda` (Gabriel), `fact_lead` (Bruno, segmento de negócio) |
-| `dim_produto` | produtos de todas as lojas (coluna `fonte`); a Datafiniti e a Amazon ligam-se pelo modelo, sem tabela ponte | avaliações, preços, itens do DataCo e da Olist |
-| `dim_cliente` | clientes do DataCo e da Olist | avaliações da Olist, itens do DataCo e da Olist |
-| `dim_vendedor` | retalhistas (Datafiniti) e vendedores da Olist | preços, itens da Olist, leads convertidas do Bruno |
-| `dim_localizacao` | país (com os indicadores do World Data 2017) e estado | vendas, itens do DataCo e da Olist, meteorologia |
-
-**Tabelas de factos:** `fact_avaliacao` (avaliações do Women's Clothing, Rent the Runway, Amazon e Olist, com a coluna `fonte`), `fact_preco`, `fact_venda`, `fact_lead`, `fact_meteorologia`, e as tabelas de itens `fact_item_encomenda` (DataCo) e `fact_item_olist` (Olist), que ficam separadas.
-
-Nas tabelas Gold usem os mesmos nomes de tabelas e de colunas do modelo. Quando um valor não existe (ex.: avaliação sem data), usa-se o registo `-1` da dimensão.
+O modelo parcial do Henrique está em `modelo/henrique/DER_Henrique.png`.
 
 ## Regras
 
