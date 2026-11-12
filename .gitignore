@@ -19,3 +19,7 @@ spark-warehouse/
 # Sistema
 .DS_Store
 Thumbs.db
+
+# Ficheiros de dados em Excel na raiz (os relatórios ficam em relatorio/<nome>/)
+/*.xlsx
+/*.xls

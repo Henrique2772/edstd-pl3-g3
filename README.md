@@ -27,7 +27,9 @@ notebooks/    notebooks Bronze, Silver e Gold: uma subpasta por elemento
 relatorio/    relatórios e artefactos de qualidade (Word/Excel): uma subpasta por elemento
 ```
 
-Cada elemento trabalha só na sua subpasta (por exemplo, `notebooks/henrique/`). O modelo conjunto fica diretamente em `modelo/`.
+Cada elemento trabalha só na sua subpasta, sempre com o nome em minúsculas: `bruno`, `diogo`, `enzo`, `gabriel`, `henrique` e `quevin` (ex.: `notebooks/gabriel/`). O modelo conjunto fica diretamente em `modelo/` (`modelo/modelo_grupo.drawio`).
+
+Se enviarem ficheiros pelo site do GitHub (*Add file → Upload files*), entrem primeiro na vossa pasta (ex.: `notebooks/gabriel/`). Se carregarem no botão a partir da página principal, os ficheiros ficam na raiz do repositório.
 
 ## Modelo dimensional do grupo
 
