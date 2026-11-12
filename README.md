@@ -46,11 +46,12 @@ O modelo do grupo está em `modelo/modelo_grupo.drawio` (abre-se em [draw.io](ht
 - `dim_ipca_mensal` (Bruno): inflação do Brasil a 12 meses (`ipca_12m`), um registo por mês (`sk_mes` = `AAAAMM`), ligada à `dim_calendario`. Não é uma tabela de factos porque descreve o mês. **Só se interpreta em factos do Brasil e nunca se soma** (usar `AVG`/`MAX` por mês);
 - `dim_categoria_produto`: área comum (ex.: Vestuário, Eletrónica, Mobiliário), categoria e subcategoria. As categorias de cada dataset são traduzidas na Silver por uma tabela `mapa_categorias` (`fonte`, `categoria_origem` → `area`, `categoria`, `subcategoria`);
 - `dim_vendedor`: vendedores da Olist, usada pelos itens da Olist e pelas leads convertidas do Bruno (mesmo `seller_id`);
-- `dim_localizacao`: país (com os indicadores do World Data 2017 e o código ISO) e estado; a coluna `nivel` indica se o registo é um país ou um estado. Os nomes dos países têm de ser normalizados na Silver;
+- `dim_localizacao`: país (com os indicadores do World Data 2017 e o código ISO) e estado; a coluna `nivel` indica se o registo é um país ou um estado. Os nomes dos países de cada fonte já estão normalizados na `silver.paises` (nome do World Data + código ISO);
 - `dim_produto`: um registo por produto de origem (Women's Clothing, Rent the Runway, Datafiniti, Amazon), sem tabela ponte. `id_produto_comum` agrupa os produtos da Datafiniti e da Amazon ligados direta ou indiretamente (por asin ou por modelo); `tipo_ligacao` é a ligação mais forte do grupo (asin > modelo > sem par). No Women's Clothing, `codigo_original` = `clothing_id` + `divisao`.
 
+- `dim_perfil_encomenda` (junk, partilhada pelo Superstore e pelo DataCo): modo de envio, mercado (as duas fontes usam os mesmos mercados; "Asia Pacific" = "Pacific Asia") e estado da encomenda.
+
 Dimensões de uma só área:
-- `dim_perfil_encomenda` (área 1, junk, usada pelo Superstore e pelo DataCo): modo de envio, mercado e estado da encomenda;
 - `dim_perfil_lead` (área 2);
 - `dim_retalhista` (área 3);
 - `dim_perfil_avaliacao` (área 4, junk): `fonte`, `ajuste` (RTR), `recomendado` e `incoerente` (Women's Clothing: `Sim`/`Não`); nas fontes em que não se aplicam fica "Não aplicável".
@@ -67,6 +68,12 @@ Regras do modelo:
 
 As chaves usam o prefixo `sk_`. Valores desconhecidos usam o registo `-1` de cada dimensão (incluindo `dim_ipca_mensal`).
 
+Notas de implementação (Silver → Gold):
+- **Categorias:** a `dim_categoria_produto` é carregada a partir da `silver.mapa_categorias`. A conformidade está nos níveis `area` e `categoria`; a `subcategoria` fica com o texto da origem (ex.: "Bookcases", "cool_stuff"), para não se perder o detalhe de cada fonte.
+- **Tipos:** a Silver guarda os valores monetários como `DOUBLE` em algumas tabelas (ex.: `vendas` e `lucro` do Superstore e do DataCo) e contagens como `BIGINT`; o cast para `DECIMAL`/`INT` do modelo é feito no Gold.
+- **Valores desconhecidos na Silver:** ficam NULL, exceto a origem das leads do Bruno, que vem como `"unknown"`; no Gold ambos passam ao registo `-1` (ou ao texto "Desconhecido" nos atributos desnormalizados).
+- **IPCA:** o ficheiro do Kaggle é atualizado todos os meses (393 ou 394 meses conforme a data do download); a Silver só usa os 7 meses de junho a dezembro de 2017.
+
 ## Modelo híbrido (o que se implementa na Gold)
 
 O enunciado pede que a Gold implemente o **modelo híbrido** (`modelo/modelo_hibrido.drawio`): as **dimensões conformes**
@@ -76,6 +83,13 @@ tabela (atributos marcados **DN** no diagrama):
 - `dim_perfil_lead` → colunas `origem`, `lead_type`, `lead_behaviour_profile`, `business_type` na `fact_funil_marketing`;
 - `dim_retalhista` → coluna `retalhista` na `fact_precos`;
 - `dim_perfil_avaliacao` → colunas `fonte`, `ajuste`, `recomendado`, `incoerente` na `fact_avaliacoes`.
+
+Nos atributos desnormalizados, o valor desconhecido é o texto "Desconhecido" (não há registo `-1`, porque não há dimensão).
+
+A `dim_ipca_mensal` mantém-se como tabela própria, ligada à `dim_calendario` (outrigger): o IPCA é um valor por **mês**
+e o calendário é por **dia**; pô-lo na `dim_calendario` repetiria o mesmo valor em ~30 linhas por mês e misturaria um
+indicador do Brasil com um calendário partilhado por dados dos EUA, Europa e Ásia. Assim fica conforme, através do
+calendário, para qualquer tabela de factos com data.
 
 ## Pipelines
 
@@ -87,7 +101,9 @@ Ordem de execução: os notebooks Bronze e Silver de cada elemento e, no fim, `n
 que lê as Silver de todos e cria `silver.mapa_categorias` (categorias de cada fonte → área e categoria comuns) e
 `silver.paises` (nomes de países de cada fonte → nome do World Data e código ISO).
 
-Os ficheiros de dados ficam em `work/data/<nome>/` no Jupyter (não vão para o GitHub).
+Os ficheiros de dados ficam em `work/data/<nome>/` no Jupyter (o Bruno usa `work/` diretamente) e não vão para o GitHub.
+
+Tabelas Silver do Henrique: `silver.wc_avaliacoes`, `silver.wc_produtos` (Women's Clothing), `silver.rtr_avaliacoes`, `silver.rtr_produtos` (Rent the Runway) e `silver.feriados_eua`.
 
 ## Regras
 
