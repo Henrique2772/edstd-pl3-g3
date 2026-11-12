@@ -12,7 +12,7 @@ Todos os datasets com datas são filtrados na camada Silver para o intervalo **1
 |---|---|---|
 | Gabriel Almeida | Global Superstore Data | *a preencher* |
 | Diogo Fernandes | DataCo Smart Supply Chain | US Holiday Dates (2004-2021) |
-| Bruno Sousa | Marketing Funnel by Olist | *a preencher* |
+| Bruno Sousa | Marketing Funnel by Olist | Brazil Inflation Rates History |
 | Quévin Gonçalves | Electronic Products and Pricing Data | Amazon Review Data (2018) |
 | Enzo Silva | Brazilian E-Commerce (Olist) | Brazil temperature 2012-2019 |
 | Henrique Oliveira | [Women's E-Commerce Clothing Reviews](https://www.kaggle.com/datasets/nicapotato/womens-ecommerce-clothing-reviews) | [Rent the Runway](https://www.kaggle.com/datasets/rmisra/clothing-fit-dataset-for-size-recommendation) + [US Holiday Dates](https://www.kaggle.com/datasets/donnetew/us-holiday-dates-2004-2021) |
