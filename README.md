@@ -38,14 +38,13 @@ O modelo do grupo está em `modelo/modelo_grupo.drawio` (abre-se em [draw.io](ht
 1. **Vendas & Encomendas**: `fact_vendas_superstore` (Gabriel), `fact_encomendas_dataco` (Diogo) e `fact_itens_olist` (Enzo), separadas por serem processos de empresas diferentes.
 2. **Marketing & Expansão**: `fact_funil_marketing` (Bruno).
 3. **Produto & Preços**: `fact_precos` (Quévin), um registo por produto × retalhista × dia.
-4. **Avaliações & Satisfação**: duas tabelas, porque são processos diferentes:
-   - `fact_avaliacoes_produto`: avaliações de peças e eletrónicos (Women's Clothing, Rent the Runway, Amazon), com `nota_5` na escala 1–5;
-   - `fact_avaliacoes_olist`: avaliação da encomenda depois da entrega (o `order_id` liga à `fact_itens_olist`).
-5. **Contexto**: `fact_macro_mensal` (IPCA, grão mensal) e `fact_meteorologia_diaria` (INMET).
+4. **Avaliações & Satisfação**: `fact_avaliacoes`, com as avaliações do Women's Clothing, do Rent the Runway, da Amazon e da Olist numa só tabela (coluna `fonte`, `nota_5` na escala 1–5). A Olist avalia a encomenda (`order_id` liga à `fact_itens_olist`) e fica com `sk_produto = -1`.
+5. **Contexto**: `fact_meteorologia_diaria` (INMET).
+
+São 7 tabelas de factos, uma por processo de negócio. O IPCA (Bruno) não é uma tabela de factos: é um valor por mês e fica como atributo `ipca_12m` da `dim_calendario`.
 
 **Dimensões partilhadas** (a verde, na faixa central do diagrama):
-- `dim_calendario`: chave `sk_calendario` no formato `AAAAMMDD` (ex.: `20170704`), um registo por dia do intervalo comum, com os feriados dos EUA (US Holiday Dates) e a chave do mês `sk_mes`;
-- `dim_mes`: versão mensal do calendário (`sk_mes` = `AAAAMM`), usada pela `fact_macro_mensal`;
+- `dim_calendario`: chave `sk_calendario` no formato `AAAAMMDD` (ex.: `20170704`), um registo por dia do intervalo comum, com os feriados dos EUA (US Holiday Dates) e a inflação do Brasil do mês (`ipca_12m`);
 - `dim_categoria_produto`: área comum (ex.: Vestuário, Eletrónica, Mobiliário), categoria e subcategoria. As categorias de cada dataset são traduzidas na Silver por uma tabela `mapa_categorias` (`fonte`, `categoria_origem` → `area`, `categoria`, `subcategoria`);
 - `dim_vendedor`: vendedores da Olist, usada pelos itens da Olist e pelas leads convertidas do Bruno (mesmo `seller_id`);
 - `dim_localizacao`: país (com os indicadores do World Data 2017 e o código ISO) e estado; a coluna `nivel` indica se o registo é um país ou um estado. Os nomes dos países têm de ser normalizados na Silver;
