@@ -44,11 +44,11 @@ O modelo do grupo está em `modelo/modelo_grupo.drawio` (abre-se em [draw.io](ht
 **Dimensões partilhadas** (a vermelho no diagrama):
 - `dim_calendario`: chave `sk_calendario` no formato `AAAAMMDD` (ex.: `20170704`), um registo por dia do intervalo comum, com os feriados dos EUA (US Holiday Dates);
 - `dim_categoria_produto`: área comum (ex.: Vestuário, Eletrónica, Mobiliário), categoria e subcategoria, usada pelas vendas, encomendas, leads, preços e avaliações;
-- `dim_vendedor`: retalhistas (Datafiniti), vendedores da Olist e leads convertidas do Bruno;
+- `dim_vendedor`: vendedores da Olist, usada pelos itens da Olist e pelas leads convertidas do Bruno (mesmo `seller_id`);
 - `dim_localizacao`: país (com os indicadores do World Data 2017) e estado;
 - `dim_produto`: peças de roupa (Women's Clothing, Rent the Runway) e eletrónicos (Datafiniti e Amazon), partilhada pelas áreas 3 e 4.
 
-Dimensões de uma só área: `dim_cliente` (clientes do DataCo e da Olist) e `dim_modo_envio` na área 1, e `dim_perfil_lead` (origem e perfil da lead) na área 2. Os atrasos e prazos ficam como medidas em dias, por isso cada tabela de factos só liga ao calendário pelas datas que as perguntas usam.
+Dimensões de uma só área: `dim_modo_envio` (área 1), `dim_perfil_lead` (origem e perfil da lead, área 2) e `dim_retalhista` (área 3). O modelo só tem as ligações de que as perguntas analíticas precisam: cada tabela de factos liga ao calendário uma só vez (as outras datas e os atrasos ficam como medidas em dias) e não há dimensão de cliente, porque nenhuma pergunta analisa clientes.
 
 As chaves usam o prefixo `sk_`. Valores desconhecidos usam o registo `-1` de cada dimensão.
 
