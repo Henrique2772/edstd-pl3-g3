@@ -1,0 +1,21 @@
+# Dados (não versionar: são grandes e estão no Kaggle)
+*.csv
+*.json
+*.json.gz
+*.parquet
+*.zip
+data/
+
+# Jupyter / Python
+.ipynb_checkpoints/
+__pycache__/
+metastore_db/
+derby.log
+spark-warehouse/
+
+# Office (ficheiros temporários)
+~$*
+
+# Sistema
+.DS_Store
+Thumbs.db
