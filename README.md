@@ -41,7 +41,7 @@ O modelo do grupo está em `modelo/modelo_grupo.drawio` (abre-se em [draw.io](ht
 4. **Avaliações & Satisfação**: `fact_avaliacoes`, com as avaliações do Women's Clothing, do Rent the Runway, da Amazon e da Olist numa só tabela (coluna `fonte`).
 5. **Contexto**: `fact_macro_mensal` (IPCA) e `fact_meteorologia_diaria` (INMET).
 
-**Dimensões partilhadas** (a vermelho no diagrama):
+**Dimensões partilhadas** (a verde no diagrama):
 - `dim_calendario`: chave `sk_calendario` no formato `AAAAMMDD` (ex.: `20170704`), um registo por dia do intervalo comum, com os feriados dos EUA (US Holiday Dates);
 - `dim_categoria_produto`: área comum (ex.: Vestuário, Eletrónica, Mobiliário), categoria e subcategoria, usada pelas vendas, encomendas, leads, preços e avaliações;
 - `dim_vendedor`: vendedores da Olist, usada pelos itens da Olist e pelas leads convertidas do Bruno (mesmo `seller_id`);
