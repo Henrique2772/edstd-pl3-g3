@@ -22,8 +22,8 @@ Corrijam a vossa linha se estiver incompleta ou errada.
 ## Organização
 
 ```
-modelo/       modelo dimensional (Gold): o modelo do grupo e uma subpasta por elemento
-notebooks/    notebooks Bronze, Silver e Gold: uma subpasta por elemento
+modelo/       modelos do grupo (dimensional, híbrido) e diagrama de pipelines; uma subpasta por elemento
+notebooks/    notebooks Bronze, Silver e Gold: uma subpasta por elemento + grupo/ (tabelas de correspondência comuns)
 relatorio/    relatórios e artefactos de qualidade (Word/Excel): uma subpasta por elemento
 ```
 
@@ -53,7 +53,7 @@ Dimensões de uma só área:
 - `dim_perfil_encomenda` (área 1, junk, usada pelo Superstore e pelo DataCo): modo de envio, mercado e estado da encomenda;
 - `dim_perfil_lead` (área 2);
 - `dim_retalhista` (área 3);
-- `dim_perfil_avaliacao` (área 4, junk): `fonte`, `ajuste` (RTR), `is_recomendado` e `is_incoerente` (Women's Clothing); nas fontes em que não se aplicam fica "Não aplicável".
+- `dim_perfil_avaliacao` (área 4, junk): `fonte`, `ajuste` (RTR), `recomendado` e `incoerente` (Women's Clothing: `Sim`/`Não`); nas fontes em que não se aplicam fica "Não aplicável".
 
 Regras do modelo:
 - cada tabela de factos liga ao calendário uma só vez; as outras datas e os atrasos ficam como medidas em dias;
@@ -66,6 +66,28 @@ Regras do modelo:
 - não há dimensão de cliente, porque nenhuma pergunta analisa clientes.
 
 As chaves usam o prefixo `sk_`. Valores desconhecidos usam o registo `-1` de cada dimensão (incluindo `dim_ipca_mensal`).
+
+## Modelo híbrido (o que se implementa na Gold)
+
+O enunciado pede que a Gold implemente o **modelo híbrido** (`modelo/modelo_hibrido.drawio`): as **dimensões conformes**
+(partilhadas por mais de uma tabela de factos: calendário, IPCA, categoria, vendedor, localização, produto e perfil de
+encomenda) ficam como tabelas próprias; as dimensões usadas por **uma só** tabela de factos são **desnormalizadas** nessa
+tabela (atributos marcados **DN** no diagrama):
+- `dim_perfil_lead` → colunas `origem`, `lead_type`, `lead_behaviour_profile`, `business_type` na `fact_funil_marketing`;
+- `dim_retalhista` → coluna `retalhista` na `fact_precos`;
+- `dim_perfil_avaliacao` → colunas `fonte`, `ajuste`, `recomendado`, `incoerente` na `fact_avaliacoes`.
+
+## Pipelines
+
+O caminho dos dados está em `modelo/diagrama_pipelines.drawio`: ficheiros originais → **Bronze** (notebook `*bronze_*`:
+HDFS `/projeto/bronze/<nome>/` e tabelas Delta `bronze.*`, dados tal como vêm) → **Silver** (notebook `*silver_*`:
+limpeza, tipos e filtro 2017-06-01 a 2017-12-31; tabelas Delta `silver.*`) → **Gold** (modelo híbrido) → dashboards.
+
+Ordem de execução: os notebooks Bronze e Silver de cada elemento e, no fim, `notebooks/grupo/silver_mapas_grupo.ipynb`,
+que lê as Silver de todos e cria `silver.mapa_categorias` (categorias de cada fonte → área e categoria comuns) e
+`silver.paises` (nomes de países de cada fonte → nome do World Data e código ISO).
+
+Os ficheiros de dados ficam em `work/data/<nome>/` no Jupyter (não vão para o GitHub).
 
 ## Regras
 
