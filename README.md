@@ -39,18 +39,18 @@ O modelo do grupo está em `modelo/modelo_grupo.drawio` (abre-se em [draw.io](ht
 2. **Marketing & Expansão**: `fact_funil_marketing` (Bruno).
 3. **Produto & Preços**: `fact_precos` (Quévin), um registo por produto × retalhista × dia.
 4. **Avaliações & Satisfação**: `fact_avaliacoes`, com as avaliações do Women's Clothing, do Rent the Runway, da Amazon e da Olist numa só tabela (coluna `fonte`, `nota_5` na escala 1–5). A Olist avalia a encomenda (`order_id` liga à `fact_itens_olist`) e fica com `sk_produto = -1`.
-5. **Contexto**: `fact_meteorologia_diaria` (INMET).
+5. **Contexto**: `fact_meteorologia_diaria` (INMET) e `dim_ipca_mensal` (IPCA, Bruno).
 
-São 7 tabelas de factos, uma por processo de negócio. O IPCA (Bruno) não é uma tabela de factos: é um valor por mês e fica como atributo `ipca_12m` da `dim_calendario`.
+São 7 tabelas de factos, uma por processo de negócio. O IPCA (Bruno) não é uma tabela de factos: é um valor por mês que descreve o mês, por isso fica na `dim_ipca_mensal` (`sk_mes` = `AAAAMM`, `ipca_12m`), ligada à `dim_calendario` pelo `sk_mes`. Assim qualquer facto com data pode ser analisado com a inflação do Brasil desse mês.
 
 **Dimensões partilhadas** (a verde, na faixa central do diagrama):
-- `dim_calendario`: chave `sk_calendario` no formato `AAAAMMDD` (ex.: `20170704`), um registo por dia do intervalo comum, com os feriados dos EUA (US Holiday Dates) e a inflação do Brasil do mês (`ipca_12m`);
+- `dim_calendario`: chave `sk_calendario` no formato `AAAAMMDD` (ex.: `20170704`), um registo por dia do intervalo comum, com os feriados dos EUA (US Holiday Dates) e a chave do mês `sk_mes`;
 - `dim_categoria_produto`: área comum (ex.: Vestuário, Eletrónica, Mobiliário), categoria e subcategoria. As categorias de cada dataset são traduzidas na Silver por uma tabela `mapa_categorias` (`fonte`, `categoria_origem` → `area`, `categoria`, `subcategoria`);
 - `dim_vendedor`: vendedores da Olist, usada pelos itens da Olist e pelas leads convertidas do Bruno (mesmo `seller_id`);
 - `dim_localizacao`: país (com os indicadores do World Data 2017 e o código ISO) e estado; a coluna `nivel` indica se o registo é um país ou um estado. Os nomes dos países têm de ser normalizados na Silver;
 - `dim_produto`: um registo por produto de origem (Women's Clothing, Rent the Runway, Datafiniti, Amazon). Os produtos da Datafiniti e da Amazon que são o mesmo têm o mesmo `id_produto_comum` (`tipo_ligacao` = asin ou modelo), sem tabela ponte. No Women's Clothing, `codigo_original` = `clothing_id` + `divisao`.
 
-Dimensões de uma só área: `dim_modo_envio` (área 1), `dim_perfil_lead` (área 2), `dim_retalhista` (área 3) e `dim_perfil_avaliacao` (área 4, junk dimension com `ajuste`, `is_recomendado` e `is_incoerente`).
+Dimensões de uma só área: `dim_modo_envio` (área 1), `dim_perfil_lead` (área 2), `dim_retalhista` (área 3), `dim_ipca_mensal` (área 5) e `dim_perfil_avaliacao` (área 4, junk dimension com `ajuste`, `is_recomendado` e `is_incoerente`).
 
 Regras do modelo:
 - cada tabela de factos liga ao calendário uma só vez; as outras datas e os atrasos ficam como medidas em dias;
