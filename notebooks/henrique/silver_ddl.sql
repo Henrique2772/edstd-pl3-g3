@@ -42,10 +42,3 @@ CREATE TABLE IF NOT EXISTS silver.rtr_produtos (
 )
 USING DELTA
 LOCATION 'hdfs://hdfs-nn:9000/warehouse/silver.db/rtr_produtos/';
-
-CREATE TABLE IF NOT EXISTS silver.feriados_eua (
-    `data`     DATE,
-    `feriado`  STRING
-)
-USING DELTA
-LOCATION 'hdfs://hdfs-nn:9000/warehouse/silver.db/feriados_eua/';

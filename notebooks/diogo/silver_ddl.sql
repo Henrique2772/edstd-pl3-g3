@@ -1,5 +1,5 @@
 -- Estrutura das tabelas Silver (diogo) em formato Delta, no Hive Metastore (base silver).
--- Só a estrutura: os dados são carregados pelo notebook 2.silver_dataco.ipynb (mode overwrite).
+-- Só a estrutura: os dados são carregados pelos notebooks 2.silver_dataco.ipynb e 3.silver_feriados.ipynb (mode overwrite).
 CREATE DATABASE IF NOT EXISTS silver LOCATION 'hdfs://hdfs-nn:9000/warehouse/silver.db/';
 
 CREATE TABLE IF NOT EXISTS silver.dataco_itens (
@@ -36,3 +36,10 @@ CREATE TABLE IF NOT EXISTS silver.dataco_itens (
 )
 USING DELTA
 LOCATION 'hdfs://hdfs-nn:9000/warehouse/silver.db/dataco_itens/';
+
+CREATE TABLE IF NOT EXISTS silver.feriados_eua (
+    `data`     DATE,
+    `feriado`  STRING
+)
+USING DELTA
+LOCATION 'hdfs://hdfs-nn:9000/warehouse/silver.db/feriados_eua/';
