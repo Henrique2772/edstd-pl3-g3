@@ -11,11 +11,11 @@ Todos os datasets com datas são filtrados na camada Silver para o intervalo **1
 | Elemento | Dataset principal | Dataset complementar |
 |---|---|---|
 | Gabriel Almeida | Global Superstore Data | World Data 2017 (Global Economic & Environmental Indicators) |
-| Diogo Fernandes | DataCo Smart Supply Chain | US Holiday Dates (2004-2021) |
+| Diogo Fernandes | DataCo Smart Supply Chain | [US Holiday Dates (2004-2021)](https://www.kaggle.com/datasets/donnetew/us-holiday-dates-2004-2021) |
 | Bruno Sousa | Marketing Funnel by Olist | Brazil Inflation Rates History |
 | Quévin Gonçalves | Electronic Products and Pricing Data | Amazon Review Data (2018) |
 | Enzo Silva | Brazilian E-Commerce (Olist) | Brazil temperature 2012-2019 |
-| Henrique Oliveira | [Women's E-Commerce Clothing Reviews](https://www.kaggle.com/datasets/nicapotato/womens-ecommerce-clothing-reviews) | [Rent the Runway](https://www.kaggle.com/datasets/rmisra/clothing-fit-dataset-for-size-recommendation) + [US Holiday Dates](https://www.kaggle.com/datasets/donnetew/us-holiday-dates-2004-2021) |
+| Henrique Oliveira | [Women's E-Commerce Clothing Reviews](https://www.kaggle.com/datasets/nicapotato/womens-ecommerce-clothing-reviews) | [Rent the Runway](https://www.kaggle.com/datasets/rmisra/clothing-fit-dataset-for-size-recommendation) |
 
 Corrijam a vossa linha se estiver incompleta ou errada.
 
@@ -97,13 +97,13 @@ O caminho dos dados está em `modelo/diagrama_pipelines.drawio`: ficheiros origi
 HDFS `/projeto/bronze/<nome>/` e tabelas Delta `bronze.*`, dados tal como vêm) → **Silver** (notebook `*silver_*`:
 limpeza, tipos e filtro 2017-06-01 a 2017-12-31; tabelas Delta `silver.*`) → **Gold** (modelo híbrido) → dashboards.
 
-Ordem de execução: os notebooks Bronze e Silver de cada elemento e, no fim, `notebooks/grupo/silver_mapas_grupo.ipynb`,
+Ordem de execução: os notebooks Bronze e Silver de cada elemento (a Silver do Henrique precisa antes da `silver.feriados_eua` do Diogo) e, no fim, `notebooks/grupo/silver_mapas_grupo.ipynb`,
 que lê as Silver de todos e cria `silver.mapa_categorias` (categorias de cada fonte → área e categoria comuns) e
 `silver.paises` (nomes de países de cada fonte → nome do World Data e código ISO).
 
 Os ficheiros de dados ficam em `work/data/<nome>/` no Jupyter (o Bruno usa `work/` diretamente) e não vão para o GitHub.
 
-Tabelas Silver do Henrique: `silver.wc_avaliacoes`, `silver.wc_produtos` (Women's Clothing), `silver.rtr_avaliacoes`, `silver.rtr_produtos` (Rent the Runway) e `silver.feriados_eua`.
+Tabelas Silver do Henrique: `silver.wc_avaliacoes`, `silver.wc_produtos` (Women's Clothing), `silver.rtr_avaliacoes`, `silver.rtr_produtos` (Rent the Runway). A KPI 3 do Henrique lê `silver.feriados_eua`, criada pelo Diogo em `notebooks/diogo/3.silver_feriados.ipynb` (US Holiday Dates é o dataset complementar do Diogo).
 
 ## Regras
 
