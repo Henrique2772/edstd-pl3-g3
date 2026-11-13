@@ -17,6 +17,7 @@ CREATE TABLE IF NOT EXISTS silver.olist_itens (
     `preco`             DECIMAL(10,2),
     `frete`             DECIMAL(10,2),
     `dias_entrega`      INT,
+    `dias_expedicao`    INT,
     `dias_atraso`       INT,
     `is_atrasada`       BOOLEAN
 )
